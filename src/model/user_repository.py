@@ -112,8 +112,8 @@ class UserRepository:
         if operations:
             # Execute all operations in bulk
             result = self._collection.bulk_write(operations)
-            self._logger.info(f"Matched: {result.matched_count}, Upserts: {
-            result.upserted_count}, Modified: {result.modified_count}")
+            self._logger.info(f"""Matched: {result.matched_count}, Upserts: {
+            result.upserted_count}, Modified: {result.modified_count}""")
 
             # Get the newly inserted users (those that were upserted)
             # The `upserted_count` corresponds to how many new documents were inserted
