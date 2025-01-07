@@ -20,7 +20,10 @@ class TelegramBot:
         return cls.instance
 
     def __init__(self):
-        self._api_token = settings.telegram_api_token
+        if settings.env == "prod":
+            self._api_token = settings.telegram_api_token_prod
+        else:
+            self._api_token = settings.telegram_api_token_dev
         self.bot = Bot(token=self._api_token)
 
     def get_reply_markup(self):

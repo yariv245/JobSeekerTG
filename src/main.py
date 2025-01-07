@@ -10,7 +10,10 @@ from telegram_handler.telegram_myinfo_handler import my_info_handler
 from telegram_handler.telegram_start_handler import start_conv_handler
 
 logger = create_logger("Main")
-_api_token = settings.telegram_api_token
+if settings.env == "prod":
+    _api_token = settings.telegram_api_token_prod
+else:
+    _api_token = settings.telegram_api_token_dev
 application = Application.builder().token(_api_token).build()
 title_filters: list[str] = ["test", "qa", "Lead", "Full-Stack", "Full Stack", "Fullstack", "Frontend", "Front-end",
                             "Front End", "DevOps", "Physical", "Staff",

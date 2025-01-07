@@ -14,6 +14,8 @@ class MongoDB:
             raise ValueError("MONGO_URI environment variable is not set")
         client = MongoClient(mongo_uri)
         database_name = settings.mongo_db_name
+        if settings.env == "dev":
+            database_name = database_name + "_dev"
         if not database_name:
             logger.error("MONGO_DB_NAME environment variable is not set")
             raise ValueError(
