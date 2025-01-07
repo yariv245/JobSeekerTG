@@ -292,8 +292,7 @@ class GlassdoorScraper(Scraper):
     def _get_location(self, location: str, is_remote: bool) -> (int, str):
         if not location or is_remote:
             return "11047", "STATE"  # remote options
-        url = f"{
-            self.base_url}/findPopularLocationAjax.htm?maxLocationsToReturn=10&term={location}"
+        url = f"{self.base_url}/findPopularLocationAjax.htm?maxLocationsToReturn=10&term={location}"
         res = self.session.get(url)
         if res.status_code != 200:
             if res.status_code == 429:
@@ -329,8 +328,7 @@ class GlassdoorScraper(Scraper):
     def _get_locations(self, location: str, is_remote: bool) -> List[GlassDoorLocationResponse]:
         if not location or is_remote:
             return "11047", "STATE"  # remote options
-        url = f"{
-            self.base_url}/findPopularLocationAjax.htm?maxLocationsToReturn=10&term={location}"
+        url = f"{self.base_url}/findPopularLocationAjax.htm?maxLocationsToReturn=10&term={location}"
         res = self.session.get(url)
         if res.status_code != 200:
             if res.status_code == 429:
