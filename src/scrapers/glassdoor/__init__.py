@@ -41,7 +41,7 @@ logger = create_logger("Glassdoor")
 
 class GlassdoorScraper(Scraper):
     def __init__(
-        self, proxies: list[str] | str | None = None, ca_cert: str | None = None
+            self, proxies: list[str] | str | None = None, ca_cert: str | None = None
     ):
         """
         Initializes GlassdoorScraper with the Glassdoor job search url
@@ -90,12 +90,12 @@ class GlassdoorScraper(Scraper):
         return JobResponse(jobs=job_list)
 
     def _fetch_jobs_page(
-        self,
-        scraper_input: ScraperInput,
-        location_id: int,
-        location_type: str,
-        page_num: int,
-        cursor: str | None,
+            self,
+            scraper_input: ScraperInput,
+            location_id: int,
+            location_type: str,
+            page_num: int,
+            cursor: str | None,
     ) -> Tuple[list[JobPost], str | None]:
         """
         Scrapes a page of Glassdoor for jobs with scraper_input criteria
@@ -119,10 +119,10 @@ class GlassdoorScraper(Scraper):
                 logger.error("Error encountered in API response")
                 raise ValueError("Error encountered in API response")
         except (
-            requests.exceptions.ReadTimeout,
-            GlassdoorException,
-            ValueError,
-            Exception,
+                requests.exceptions.ReadTimeout,
+                GlassdoorException,
+                ValueError,
+                Exception,
         ) as e:
             logger.error(f"Glassdoor: {str(e)}")
             return jobs, None
@@ -163,7 +163,7 @@ class GlassdoorScraper(Scraper):
                          self.jobs_per_page) + 2
             range_end = min(tot_pages, self.max_pages + 1)
             for page in range(range_start, range_end):
-                logger.info(f"search page: {page} / {range_end-1}")
+                logger.info(f"search page: {page} / {range_end - 1}")
                 try:
                     jobs, cursor = self._fetch_jobs_page(
                         scraper_input, location_id, location_type, page, cursor
@@ -320,6 +320,7 @@ class GlassdoorScraper(Scraper):
         return int(items[0]["locationId"]), location_type
 
         # Example string 'Tel Aviv, Israel'
+
     def get_city_from_location(self, location: str) -> str:
         # Replace space with %2 to get "Tel%2Aviv"
         return location.split(',')[0].strip()
@@ -353,11 +354,11 @@ class GlassdoorScraper(Scraper):
         return items
 
     def _add_payload(
-        self,
-        location_id: int,
-        location_type: str,
-        page_num: int,
-        cursor: str | None = None,
+            self,
+            location_id: int,
+            location_type: str,
+            page_num: int,
+            cursor: str | None = None,
     ) -> str:
         fromage = None
         if self.scraper_input.hours_old:
@@ -389,7 +390,7 @@ class GlassdoorScraper(Scraper):
         if self.scraper_input.job_type:
             payload["variables"]["filterParams"].append(
                 {"filterKey": "jobType",
-                    "values": self.scraper_input.job_type.value[0]}
+                 "values": self.scraper_input.job_type.value[0]}
             )
         return json.dumps([payload])
 

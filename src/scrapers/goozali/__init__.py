@@ -66,8 +66,7 @@ class GoozaliScraper(Scraper):
                 cookies=full_request.cookies)
             logger.info(f"response: {str(response)}")
             if (response.status_code != 200):
-                logger.error(f"Status code: {response.status_code}, Error: {
-                str(response.text)}")
+                logger.error(f"Status code: {response.status_code}, Error: {str(response.text)}")
                 return JobResponse(jobs=job_list)
         except Exception as e:
             logger.error(f"Exception: {str(e)}")
