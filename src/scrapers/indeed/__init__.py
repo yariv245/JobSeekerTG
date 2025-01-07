@@ -75,9 +75,7 @@ class IndeedScraper(Scraper):
             logger.info(f"start searching for location: {location}")
             while len(self.seen_urls) < scraper_input.results_wanted + scraper_input.offset:
                 logger.info(
-                    f"search page: {
-                    page} / {math.ceil(scraper_input.results_wanted / self.jobs_per_page)}"
-                )
+                    f"search page: {page} / {math.ceil(scraper_input.results_wanted / self.jobs_per_page)}")
                 jobs, cursor = self._scrape_page(cursor, location)
                 if not jobs:
                     logger.info(f"found no jobs on page: {page}")

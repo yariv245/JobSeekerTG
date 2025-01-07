@@ -92,10 +92,7 @@ class LinkedInScraper(Scraper):
             logger.info(f"start searching for location: {location}")
             while continue_search():
                 request_count += 1
-                logger.info(
-                    f"search page: {
-                        request_count} / {math.ceil(scraper_input.results_wanted / 10)}"
-                )
+                logger.info(f"search page: {request_count} / {math.ceil(scraper_input.results_wanted / 10)}")
                 params = {
                     "keywords": scraper_input.search_term,
                     "location": location,
