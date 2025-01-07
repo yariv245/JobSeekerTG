@@ -302,8 +302,7 @@ class GlassdoorScraper(Scraper):
             else:
                 err = f"Glassdoor response status code {res.status_code}"
                 err += f" - {res.text}"
-                logger.error(f"Glassdoor response status code {
-                             res.status_code}")
+                logger.error(f"Glassdoor response status code {res.status_code}")
                 return None, None
         items = res.json()
 
@@ -338,8 +337,7 @@ class GlassdoorScraper(Scraper):
             else:
                 err = f"Glassdoor response status code {res.status_code}"
                 err += f" - {res.text}"
-                logger.error(f"Glassdoor response status code {
-                             res.status_code}")
+                logger.error(f"Glassdoor response status code {res.status_code}")
                 return None, None
         formatted_city = self.get_city_from_location(location)
         items: List[GlassDoorLocationResponse] = [
