@@ -107,8 +107,7 @@ class IndeedScraper(Scraper):
         query = job_search_query.format(
             what=(f'what: "{search_term}"' if search_term else ""),
             location=(
-                f'location: {{where: "{location}", radius: {
-                self.scraper_input.distance}, radiusUnit: MILES}}'
+                f'location: {{where: "{location}", radius: {self.scraper_input.distance}, radiusUnit: MILES}}'
                 if location
                 else ""
             ),
@@ -129,8 +128,7 @@ class IndeedScraper(Scraper):
         )
         if not response.ok:
             logger.info(
-                f"responded with status code: {
-                response.status_code} (submit GitHub issue if this appears to be a bug)"
+                f"responded with status code: {response.status_code} (submit GitHub issue if this appears to be a bug)"
             )
             return jobs, new_cursor
         data = response.json()
