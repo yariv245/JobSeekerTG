@@ -14,6 +14,7 @@ class JobRepository:
     def __init__(self):
         self._logger = create_logger("JobRepository")
         self._collection = mongo_client.get_collection('jobs')
+        self._collection.create_index('id', unique=True)
 
     def find_by_id(self, job_id: str) -> Optional[JobPost]:
         """
