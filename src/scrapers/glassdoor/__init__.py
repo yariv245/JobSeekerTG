@@ -349,8 +349,7 @@ class GlassdoorScraper(Scraper):
             item for item in items if item.label is not None and formatted_city in item.label
         ]
         if not items:
-            logger.error(f"ValueError: Location '{
-                         location}' not found on Glassdoor")
+            logger.error(f"ValueError: Location '{location}' not found on Glassdoor")
             # raise ValueError(f"Location '{location}' not found on Glassdoor")
 
         return items
