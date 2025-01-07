@@ -128,8 +128,7 @@ class LinkedInScraper(Scraper):
                                 f"429 Response - Blocked by LinkedIn for too many requests"
                             )
                         else:
-                            err = f"LinkedIn response status code {
-                                response.status_code}"
+                            err = f"LinkedIn response status code {response.status_code}"
                             err += f" - {response.text}"
                         logger.error(err)
                         return JobResponse(jobs=job_list)
