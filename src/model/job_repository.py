@@ -75,7 +75,7 @@ class JobRepository:
             )
 
         if operations:
-            result = self._collection.bulk_write(operations)
+            result = self._collection.bulk_write(operations,ordered=True)
             self._logger.info(f"""Matched: {result.matched_count}, Upserts: {
             result.upserted_count}, Modified: {result.modified_count}""")
             result.upserted_ids.get(0)
