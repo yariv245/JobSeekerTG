@@ -3,8 +3,8 @@ from typing import Optional
 from dotenv import load_dotenv
 from pymongo import UpdateOne
 
-from scrapers import create_logger
 from jobs import JobPost
+from scrapers import create_logger
 from .monogo_db import mongo_client
 
 load_dotenv()
@@ -56,14 +56,13 @@ class JobRepository:
         self._collection.insert_one(job_dict)
         self._logger.info(f"Inserted new job with title {job.title}.")
 
-    def insert_many_if_not_found(self, jobs: list[JobPost]) -> tuple[list[JobPost], list[JobPost]]:
+    def insert_many_if_not_found(self, jobs: list[JobPost]) -> list[JobPost]:
         """
         Perform bulk upserts for a list of JobPost objects into a MongoDB collection.
         Only insert new jobs and return the list of newly inserted jobs.
         """
         operations = []
         new_jobs = []  # List to store the new jobs inserted into MongoDB
-        old_jobs = []  # List to store the new jobs inserted into MongoDB
         for job in jobs:
             job_dict = job.model_dump(exclude={"date_posted"})
             operations.append(
@@ -76,19 +75,17 @@ class JobRepository:
             )
 
         if operations:
-            # Execute all operations in bulk
             result = self._collection.bulk_write(operations)
             self._logger.info(f"""Matched: {result.matched_count}, Upserts: {
             result.upserted_count}, Modified: {result.modified_count}""")
+            result.upserted_ids.get(0)
+            new_ids = list(result.upserted_ids.values())
+            query = {"_id": {"$in": new_ids}}
+            result = self._collection.find(query)
+            for document in result:
+                new_jobs.append(JobPost(**document))
 
-            # Get the newly inserted jobs (those that were upserted)
-            # The `upserted_count` corresponds to how many new documents were inserted
-            for i, job in enumerate(jobs):
-                if result.upserted_count > 0 and i < result.upserted_count:
-                    new_jobs.append(job)
-                else:
-                    old_jobs.append(job)
+        return new_jobs
 
-        return old_jobs, new_jobs
 
 job_repository = JobRepository()

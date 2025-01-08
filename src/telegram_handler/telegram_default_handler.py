@@ -66,12 +66,11 @@ class TelegramDefaultHandler(TelegramHandler):
         )
         self.logger.info(f"Found {len(jobs)} jobs")
         self.jobRepository.insert_many_if_not_found(filtered_out_jobs)
-        old_jobs, new_jobs = self.jobRepository.insert_many_if_not_found(jobs)
+        new_jobs = self.jobRepository.insert_many_if_not_found(jobs)
         for newJob in new_jobs:
             await tg_bot.send_job(chat_id, newJob)
         if filtered_out_jobs:
             await tg_bot.send_text(chat_id, "filtered by title: ",
                                               reply_markup=map_jobs_to_keyboard(filtered_out_jobs))
-        self.logger.info(f"Found {len(old_jobs)} old jobs")
         await tg_bot.send_text(chat_id,f"Finished scarping: {site_names_print}")
         self.logger.info("finished handling")
