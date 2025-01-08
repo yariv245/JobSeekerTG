@@ -81,8 +81,8 @@ class JobRepository:
             result.upserted_ids.get(0)
             new_ids = list(result.upserted_ids.values())
             query = {"_id": {"$in": new_ids}}
-            result = self._collection.find(query)
-            for document in result:
+            result_find = self._collection.find(query)
+            for document in result_find:
                 new_jobs.append(JobPost(**document))
 
         return new_jobs

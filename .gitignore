@@ -6,8 +6,7 @@
 **/output/
 **/.DS_Store
 *.pyc
-src/config/.env.prod
-src/config/.env.dev
+src/config/.env
 dist
 jobs.csv
 .vscode/launch.json
