@@ -4,11 +4,11 @@ from telegram.ext import (
     ContextTypes,
 )
 
-from scrapers import Site, scrape_jobs, JobPost
-from scrapers.utils import create_logger
 from model.job_repository import JobRepository
 from model.user_repository import user_repository
-from telegram_bot import TelegramBot
+from scrapers import Site, scrape_jobs, JobPost
+from scrapers.utils import create_logger
+from telegram_bot import tg_bot
 from telegram_handler.telegram_handler import TelegramHandler
 
 
@@ -36,7 +36,6 @@ def map_jobs_to_keyboard(jobs: list[JobPost]) -> InlineKeyboardMarkup:
 class TelegramDefaultHandler(TelegramHandler):
     def __init__(self, sites: list[Site]):
         self.sites_to_scrap = sites
-        self.telegram_bot = TelegramBot()
         self.jobRepository = JobRepository()
         if len(sites) == 1:
             self.logger = create_logger(
@@ -47,15 +46,14 @@ class TelegramDefaultHandler(TelegramHandler):
     async def handle(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         self.logger.info("start handling")
         chat_id = update.message.chat.id
-        await self.telegram_bot.set_message_reaction(chat_id,
+        await tg_bot.set_message_reaction(chat_id,
                                                      update.message.message_id, ReactionEmoji.FIRE)
         user = user_repository.find_by_username(update.message.from_user.username)
 
         site_names = [site.name for site in self.sites_to_scrap]
         site_names_print = ", ".join(site_names)
         locations = [location + f", {user.country}" for location in user.cities]
-        await self.telegram_bot.send_text(chat_id,
-                                          f"Start scarping: {site_names_print}")
+        await tg_bot.send_text(chat_id,f"Start scarping: {site_names_print}")
         filtered_out_jobs, jobs = scrape_jobs(
             site_name=self.sites_to_scrap,
             user=user,
@@ -70,11 +68,10 @@ class TelegramDefaultHandler(TelegramHandler):
         self.jobRepository.insert_many_if_not_found(filtered_out_jobs)
         old_jobs, new_jobs = self.jobRepository.insert_many_if_not_found(jobs)
         for newJob in new_jobs:
-            await self.telegram_bot.send_job(chat_id, newJob)
+            await tg_bot.send_job(chat_id, newJob)
         if filtered_out_jobs:
-            await self.telegram_bot.send_text(chat_id, "filtered by title: ",
+            await tg_bot.send_text(chat_id, "filtered by title: ",
                                               reply_markup=map_jobs_to_keyboard(filtered_out_jobs))
         self.logger.info(f"Found {len(old_jobs)} old jobs")
-        await self.telegram_bot.send_text(chat_id,
-                                          f"Finished scarping: {site_names_print}")
+        await tg_bot.send_text(chat_id,f"Finished scarping: {site_names_print}")
         self.logger.info("finished handling")

@@ -1,9 +1,9 @@
 from telegram import MaybeInaccessibleMessage
 from telegram.constants import ReactionEmoji
 
-from scrapers import create_logger
 from model.job_repository import job_repository
-from telegram_bot import TelegramBot
+from scrapers import create_logger
+from telegram_bot import tg_bot
 from telegram_handler.button_callback.button_strategy import ButtonStrategy
 
 
@@ -15,7 +15,6 @@ class FireStrategy(ButtonStrategy):
         """
         self._message = message
         self._emoji = ReactionEmoji.FIRE
-        self._telegram_bot = TelegramBot()
         self._job_id = job_id
         self._logger = create_logger("FireStrategy")
 
@@ -27,4 +26,4 @@ class FireStrategy(ButtonStrategy):
         job.applied = True
         job_repository.update(job)
         chat_id = self._message.chat.id
-        await self._telegram_bot.set_message_reaction(chat_id, self._message.message_id, self._emoji)
+        await tg_bot.set_message_reaction(chat_id, self._message.message_id, self._emoji)

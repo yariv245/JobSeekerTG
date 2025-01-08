@@ -11,7 +11,6 @@ from model.Position import Position
 from model.User import User
 from model.user_repository import user_repository
 from scrapers.utils import create_logger
-from telegram_bot import TelegramBot
 from telegram_handler.start_handler_constats import START_MESSAGE, POSITION_MESSAGE, POSITION_NOT_FOUND, \
     LOCATION_MESSAGE, EXPERIENCE_MESSAGE, FILTER_TILE_MESSAGE, THANK_YOU_MESSAGE, BYE_MESSAGE, VERIFY_MESSAGE, \
     SEARCH_MESSAGE, EXPERIENCE_INVALID, JOB_AGE_INVALID, JOB_AGE_MESSAGE
@@ -31,7 +30,6 @@ class Flow(Enum):
 class TelegramStartHandler:
 
     def __init__(self):
-        self.telegram_bot = TelegramBot()
         self.logger = create_logger("TelegramStartHandler")
 
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:

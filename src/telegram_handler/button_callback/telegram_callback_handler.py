@@ -4,7 +4,6 @@ from telegram.ext import (
 )
 
 from scrapers import create_logger
-from telegram_bot import TelegramBot
 from telegram_handler.button_callback.button_callback_context import ButtonCallBackContext
 
 
@@ -34,7 +33,6 @@ def _extract_job_id(message: str) -> str:
 
 class TelegramCallHandler:
     def __init__(self):
-        self.telegram_bot = TelegramBot()
         self.logger = create_logger("TelegramCallHandler")
 
     async def button_callback(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:

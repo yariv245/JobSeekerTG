@@ -2,7 +2,7 @@ import asyncio
 
 from dotenv import load_dotenv
 
-from telegram_bot import TelegramBot
+from telegram_bot import tg_bot
 from tests.test_util import createMockJob
 
 load_dotenv()
@@ -15,14 +15,13 @@ class TelegramTests:
         This block ensures that the script runs the test only when executed directly,
         not when imported as a module.
         """
-        self.bot = TelegramBot()
 
     async def send_job(self):
         """
         Sents a mock job Telegram using Telegram Bot.
         """
         job = createMockJob()
-        await self.bot.send_job(job)
+        await tg_bot.send_job(job)
         print(f"Test sent job finished.")
 
 
