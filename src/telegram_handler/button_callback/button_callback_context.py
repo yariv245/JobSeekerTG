@@ -42,7 +42,7 @@ class ButtonCallBackContext:
         self._strategy = strategy
 
     async def run(self) -> None:
-        self._logger.info("Starting")
+        self._logger.debug("Starting")
         if ReactionEmoji.FIRE.name == self._data:
             self._strategy = FireStrategy(self._message, self._job_id)
         elif ReactionEmoji.PILE_OF_POO.name == self._data:
@@ -57,4 +57,4 @@ class ButtonCallBackContext:
             return
 
         await self._strategy.execute()
-        self._logger.info("Finished")
+        self._logger.debug("Finished")
