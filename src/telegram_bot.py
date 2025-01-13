@@ -15,11 +15,7 @@ logger = create_logger("TelegramBot")
 
 class TelegramBot:
     def __init__(self):
-        if settings.env == "prod":
-            self._api_token = settings.telegram_api_token_prod
-        else:
-            self._api_token = settings.telegram_api_token_dev
-        logger.info(f"connected to {settings.env} telegram")
+        self._api_token = settings.telegram_api_token
         self.bot = Bot(token=self._api_token)
 
     def get_reply_markup(self):
@@ -87,5 +83,6 @@ class TelegramBot:
         except Exception as e:
             logger.error(f"Failed to set Reaction to message: {message_id}")
             logger.error(f"Error: {e}")
+
 
 tg_bot = TelegramBot()
