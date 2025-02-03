@@ -19,6 +19,7 @@ from .goozali import GoozaliScraper
 from .indeed import IndeedScraper
 from .linkedin import LinkedInScraper
 from .scraper_input import ScraperInput
+from .scraper_response import ScraperResponse
 from .site import Site
 from .utils import set_logger_level, create_logger
 from .ziprecruiter import ZipRecruiterScraper
@@ -54,7 +55,7 @@ def scrape_jobs(
         verbose: int = 2,
         filter_by_title: list[str] = None,
         **kwargs,
-) -> (list[JobPost], list[JobPost]):
+) -> ScraperResponse:
     """
     Simultaneously scrapes job data from multiple job sites.
     :return: list of jobPost, list of new jobPost
@@ -124,6 +125,7 @@ def scrape_jobs(
         return site.value, scraped_data
 
     site_to_jobs_dict = {}
+    site_to_error_dict = {}
     merged_jobs: list[JobPost] = []
     lock = Lock()
 
@@ -131,14 +133,14 @@ def scrape_jobs(
         logger = create_logger(f"Worker {site}")
         logger.info("Starting")
         try:
-            site_val, scraped_info = scrape_site(site)
+            site_val, job_response = scrape_site(site)
             with lock:
-                merged_jobs.extend(scraped_info.jobs)
+                merged_jobs.extend(job_response.jobs)
             logger.info("Finished")
-            return site_val, scraped_info
+            return site_val, job_response
         except Exception as e:
             logger.error(f"Error: {e}")
-            return None, None
+            return site.value, JobResponse(exec_message=str(e))
 
     with ThreadPoolExecutor(max_workers=5) as executor:
         logger = create_logger("ThreadPoolExecutor")
@@ -150,7 +152,10 @@ def scrape_jobs(
             try:
                 site_value, scraped_data = future.result()
                 if site_value and scraped_data:
-                    site_to_jobs_dict[site_value] = scraped_data
+                    if scraped_data.exec_message:
+                        site_to_error_dict[site_value] = scraped_data.exec_message
+                    else:
+                        site_to_jobs_dict[site_value] = scraped_data
             except Exception as e:
                 logger.error(f"Future Error occurred: {e}")
 
@@ -183,4 +188,6 @@ def scrape_jobs(
                 remaining_jobs.append(job)
         return filtered_jobs, remaining_jobs
 
-    return filter_jobs_by_title_name(merged_jobs, filter_by_title)
+    filtered_jobs, remaining_jobs = filter_jobs_by_title_name(merged_jobs, filter_by_title)
+
+    return ScraperResponse(remaining_jobs,filtered_jobs,site_to_error_dict)

@@ -144,10 +144,11 @@ class LinkedInScraper(Scraper):
                     break
                 except Exception as e:
                     if "Proxy responded with" in str(e):
-                        logger.error(f"LinkedIn: Bad proxy")
+                        e_message = "Bad proxy"
                     else:
-                        logger.error(f"LinkedIn: {str(e)}")
-                    return JobResponse(jobs=job_list)
+                        e_message = str(e)
+                    logger.error(f"LinkedIn: {e_message}")
+                    return JobResponse(jobs=job_list, exec_message=e_message)
 
                 soup = BeautifulSoup(response.text, "html.parser")
                 job_cards = soup.find_all("div", class_="base-search-card")

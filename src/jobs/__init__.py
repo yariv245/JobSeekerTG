@@ -325,3 +325,4 @@ class JobPost(BaseModel):
 
 class JobResponse(BaseModel):
     jobs: list[JobPost] = []
+    exec_message: str = None

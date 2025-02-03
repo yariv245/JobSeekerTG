@@ -66,11 +66,13 @@ class GoozaliScraper(Scraper):
                 cookies=full_request.cookies)
             logger.info(f"response: {str(response)}")
             if (response.status_code != 200):
-                logger.error(f"Status code: {response.status_code}, Error: {str(response.text)}")
-                return JobResponse(jobs=job_list)
+                response_error_message = f"Status code: {response.status_code}, Error: {str(response.text)}"
+                logger.error(response_error_message)
+                return JobResponse(jobs=job_list,exec_message=response_error_message)
         except Exception as e:
-            logger.error(f"Exception: {str(e)}")
-            return JobResponse(jobs=job_list)
+            exception_message = f"Exception: {str(e)}"
+            logger.error(exception_message)
+            return JobResponse(jobs=job_list,exec_message=exception_message)
         goozali_response = self.mapper.map_response_to_goozali_response(
             response=response)
         column = self.component.find_column(

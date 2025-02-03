@@ -54,7 +54,7 @@ class TelegramDefaultHandler(TelegramHandler):
         site_names_print = ", ".join(site_names)
         locations = [location + f", {user.country}" for location in user.cities]
         await tg_bot.send_text(chat_id,f"Start scarping: {site_names_print}")
-        filtered_out_jobs, jobs = scrape_jobs(
+        scraper_response = scrape_jobs(
             site_name=self.sites_to_scrap,
             user=user,
             search_term=user.position.value,
@@ -64,13 +64,17 @@ class TelegramDefaultHandler(TelegramHandler):
             filter_by_title=user.title_filters,
             country_indeed='israel'
         )
-        self.logger.info(f"Found {len(jobs)} jobs")
-        self.jobRepository.insert_many_if_not_found(filtered_out_jobs)
-        new_jobs = self.jobRepository.insert_many_if_not_found(jobs)
+        self.logger.info(f"Found {len(scraper_response.remaining_jobs)} jobs")
+        self.jobRepository.insert_many_if_not_found(scraper_response.filtered_jobs)
+        new_jobs = self.jobRepository.insert_many_if_not_found(scraper_response.remaining_jobs)
+        if scraper_response.site_to_error_dict:
+            for pair in scraper_response.site_to_error_dict:
+                error_message = scraper_response.site_to_error_dict[pair]
+                await tg_bot.send_text(chat_id, f"Error {pair} scarping: {error_message}")
         for newJob in new_jobs:
             await tg_bot.send_job(chat_id, newJob)
-        if filtered_out_jobs:
+        if scraper_response.filtered_jobs:
             await tg_bot.send_text(chat_id, "filtered by title: ",
-                                              reply_markup=map_jobs_to_keyboard(filtered_out_jobs))
+                                              reply_markup=map_jobs_to_keyboard(scraper_response.filtered_jobs))
         await tg_bot.send_text(chat_id,f"Finished scarping: {site_names_print}")
         self.logger.info("finished handling")
