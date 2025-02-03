@@ -197,6 +197,7 @@ class GlassdoorScraper(Scraper):
         """
         Processes a single job and fetches its description.
         """
+
         job_id = job_data["jobview"]["job"]["listingId"]
         job_url = f"{self.base_url}job-listing/j?jl={job_id}"
         if job_url in self.seen_urls:
