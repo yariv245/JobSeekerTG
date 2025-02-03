@@ -47,6 +47,8 @@ class GoozaliScrapperComponent:
             if (column.name == column_name):
                 return column
 
+        raise Exception(f"Can't find column {column_name} from columns list")
+
     def find_choices_from_column(self, column: GoozaliColumn, choices: list[GoozaliFieldChoice]) -> list[
         GoozaliColumnChoice]:
         if not column.typeOptions.choices:
