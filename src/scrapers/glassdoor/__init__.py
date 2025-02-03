@@ -106,7 +106,7 @@ class GlassdoorScraper(Scraper):
             payload = self._add_payload(
                 location_id, location_type, page_num, cursor)
             response = self.session.post(
-                f"{self.base_url}/graph",
+                f"{self.base_url}graph",
                 timeout_seconds=15,
                 data=payload,
             )
@@ -151,11 +151,11 @@ class GlassdoorScraper(Scraper):
         """
         Private method to fetch jobs from a specific page and return as a list.
         """
+        job_list: list[JobPost] = []
         try:
             if location_type is None:
                 logger.error("Glassdoor: location not parsed")
                 return JobResponse(jobs=[])
-            job_list: list[JobPost] = []
             cursor = None
 
             range_start = 1 + (scraper_input.offset // self.jobs_per_page)
@@ -178,7 +178,7 @@ class GlassdoorScraper(Scraper):
             return job_list
         except Exception as e:
             logger.error(f"Failed to fetch jobs from page {page}: {str(e)}")
-            return []  # Return an empty list in case of failure
+            return job_list  # Return an empty list in case of failure
 
     def _get_csrf_token(self):
         """
@@ -345,7 +345,7 @@ class GlassdoorScraper(Scraper):
             GlassDoorLocationResponse(**item) for item in res.json()]
         # Filter items based on the processed city name
         items = [
-            item for item in items if item.label is not None and formatted_city in item.label
+            item for item in items if item.label is not None and formatted_city.lower() in item.label.lower()
         ]
         if not items:
             logger.error(f"ValueError: Location '{location}' not found on Glassdoor")
