@@ -34,10 +34,18 @@ class TelegramBot:
         """
         Send JobPost details to Telegram chat.
         """
+        location = "Unable To find"
+        try:
+            if job.location:
+                location = job.location.display_location()
+        except Exception as e:
+            logger.error(f"Failed to parse location of job: {job.id}")
+            logger.error(f"Error: {e}")
+
         message = f"Job ID: {job.id}\n" \
                   f"Job Title: {job.title}\n" \
                   f"Company: {job.company_name}\n" \
-                  f"Location: {job.location.display_location()}\n" \
+                  f"Location: {location}\n" \
                   f"Link: {job.job_url}\n"
         reply_markup = self.get_reply_markup()
 
