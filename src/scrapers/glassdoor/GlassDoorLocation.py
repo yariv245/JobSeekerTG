@@ -9,6 +9,7 @@ class GlassDoorLocationResponse:
     label: str
     locationId: int
     locationType: str
+    longName: str
     realId: int
 
 
