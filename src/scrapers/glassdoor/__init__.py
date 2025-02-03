@@ -80,7 +80,7 @@ class GlassdoorScraper(Scraper):
                 location, scraper_input.is_remote
             )
             for glassDoorLocatiion in glassDoorLocatiions:
-                logger.info(f"Location: {glassDoorLocatiion.longName}")
+                logger.info(f"Location: {glassDoorLocatiion}")
                 locationType = get_location_type(glassDoorLocatiion)
                 locationId = get_location_id(glassDoorLocatiion)
                 jobs_temp = self.get_jobs(
