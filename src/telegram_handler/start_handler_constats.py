@@ -37,8 +37,7 @@ SEARCH_MESSAGE: str = "To search for jobs on a specific site, simply send the si
                       "/indeed\n" \
                       "/glassdoor\n" \
                       "/goozali\n\n" \
-                      "Or, use the command /find to search across all supported job boards for a broader search.\n\n" \
-                      "Let me know how I can assist you further! 😊"
+                      "Or, use the command /find to search across all supported job boards for a broader search."
 
 BYE_MESSAGE: str = "Have a great day!✨\n" \
                    "I hope to assist you with your job search in the future.😊"
