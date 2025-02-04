@@ -1,11 +1,12 @@
 from telegram import Update
-from telegram.ext import Application, CommandHandler, CallbackQueryHandler
+from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters
 
 from config.settings import settings
 from scrapers import Site
 from scrapers.utils import create_logger
 from telegram_handler import TelegramDefaultHandler
 from telegram_handler.button_callback.telegram_callback_handler import TelegramCallHandler
+from telegram_handler.telegram_any_handler import any_handler
 from telegram_handler.telegram_myinfo_handler import my_info_handler
 from telegram_handler.telegram_start_handler import start_conv_handler
 
@@ -41,5 +42,6 @@ if __name__ == "__main__":
     application.add_handler(CommandHandler(Site.INDEED.value, tg_handler_indeed.handle))
     application.add_handler(CommandHandler("myInfo", my_info_handler.handle))
     application.add_handler(CallbackQueryHandler(tg_callback_handler.button_callback))
+    application.add_handler(MessageHandler(filters.ALL, any_handler.handle))
     logger.info("Run polling from telegram")
     application.run_polling(allowed_updates=Update.ALL_TYPES)
