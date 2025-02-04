@@ -46,7 +46,7 @@ class ButtonCallBackContext:
         if ReactionEmoji.FIRE.name == self._data:
             self._strategy = FireStrategy(self._message, self._job_id)
         elif ReactionEmoji.PILE_OF_POO.name == self._data:
-            self._strategy = PooStrategy(self._message)
+            self._strategy = PooStrategy(self._message, self._job_id)
         elif self._data:
             job = job_repository.find_by_id(self._data)
             if job:
