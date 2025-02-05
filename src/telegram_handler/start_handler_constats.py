@@ -44,5 +44,5 @@ BYE_MESSAGE: str = "Have a great day!✨\n" \
 
 VERIFY_MESSAGE: str = "Did you choose: %s ? 🧐"
 
-DEFAULT_MESSAGE = SEARCH_MESSAGE + "\n\nB.S🤔\n" \
+DEFAULT_MESSAGE = SEARCH_MESSAGE + "\n\nBTW🤔\n" \
                     "Use /myinfo to 👀 your data 😊"
