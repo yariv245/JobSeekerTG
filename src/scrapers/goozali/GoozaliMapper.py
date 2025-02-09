@@ -1,11 +1,29 @@
-from datetime import datetime
 import json
+from datetime import datetime
 
 from jobs import JobPost, Location
-from .model import GoozaliColumnTypeOptions, GoozaliResponse, GoozaliRow, GoozaliColumn, GoozaliColumnChoice, GoozaliResponseData
 from .constants import job_post_column_to_goozali_column, job_post_column_names
+from .model import GoozaliColumnTypeOptions, GoozaliResponse, GoozaliRow, GoozaliColumn, GoozaliColumnChoice, \
+    GoozaliResponseData
+
 
 # Mapping function to convert parsed dictionary into GoozaliResponseData
+
+
+def handle_description_case(job_post_column: str, row: GoozaliRow,
+                            dict_column_name_to_column: dict[str, GoozaliColumn]):
+    goozali_column_name = job_post_column_to_goozali_column[job_post_column]
+    column = dict_column_name_to_column[goozali_column_name]
+    if column.id in row.cellValuesByColumnId:
+        return row.cellValuesByColumnId[column.id]
+
+    goozali_column_name = "Job Description"
+    column = dict_column_name_to_column[goozali_column_name]
+
+    if column.id in row.cellValuesByColumnId:
+        return row.cellValuesByColumnId[column.id]
+
+    return None
 
 
 class GoozaliMapper:
@@ -76,30 +94,37 @@ class GoozaliMapper:
         # Return a new GoozaliResponse with msg and the converted data
         return GoozaliResponse(msg=data['msg'], data=data_obj)
 
-    def get_value_by_job_post_Id(self, job_post_column: str, row: GoozaliRow, dict_column_name_to_column: dict[str, GoozaliColumn]):
+    def get_value_by_job_post_Id(self, job_post_column: str, row: GoozaliRow,
+                                 dict_column_name_to_column: dict[str, GoozaliColumn]):
         goozali_column_name = job_post_column_to_goozali_column[job_post_column]
         column = dict_column_name_to_column[goozali_column_name]
-        value = row.cellValuesByColumnId[column.id]
-        if (job_post_column == "location"):
+
+        if job_post_column == "description":
+            value = handle_description_case(job_post_column, row, dict_column_name_to_column)
+        else:
+            value = row.cellValuesByColumnId[column.id]
+
+        if job_post_column == "location":
             location = Location(text="Not Found")
             if type(value) is list:
                 location_text = column.typeOptions.choices[value[0]].name
                 location.text = location_text
 
             return location
-        if (job_post_column == "company_industry"):
+        if job_post_column == "company_industry":
             if type(value) is list:
                 value = column.typeOptions.choices[value[0]].name
 
-        if (job_post_column == "date_posted"):
+        if job_post_column == "date_posted":
             return datetime.fromisoformat(value.replace("Z", "")).date()
 
-        if (job_post_column == "field"):
+        if job_post_column == "field":
             value = column.typeOptions.choices[value].name
 
         return str(value)
 
-    def map_goozali_response_to_job_post(self, row: GoozaliRow, dict_column_name_to_column: dict[str, GoozaliColumn]) -> JobPost:
+    def map_goozali_response_to_job_post(self, row: GoozaliRow,
+                                         dict_column_name_to_column: dict[str, GoozaliColumn]) -> JobPost:
         temp = {}
         for col in job_post_column_names:
             value = self.get_value_by_job_post_Id(
