@@ -56,7 +56,6 @@ class UserRepository:
             return cached_user
 
         result = self._collection.find_one({"username": username})
-        self._logger.info("find user by usernameeeeeeee")
         if result:
             user = User(**result)
             cache_manager.save(username, user)
