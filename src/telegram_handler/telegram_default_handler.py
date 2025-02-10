@@ -62,7 +62,7 @@ class TelegramDefaultHandler(TelegramHandler):
             results_wanted=200,
             hours_old=int(user.job_age),
             filter_by_title=user.title_filters,
-            country_indeed='israel'
+            country_indeed=user.country
         )
         self.logger.info(f"Found {len(scraper_response.remaining_jobs)} jobs")
         self.jobRepository.insert_many_if_not_found(scraper_response.filtered_jobs)
