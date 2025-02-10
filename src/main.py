@@ -14,16 +14,9 @@ logger = create_logger("Main")
 
 _api_token = settings.telegram_api_token
 application = Application.builder().token(_api_token).build()
-title_filters: list[str] = ["test", "qa", "Lead", "Full-Stack", "Full Stack", "Fullstack", "Frontend", "Front-end",
-                            "Front End", "DevOps", "Physical", "Staff",
-                            "automation", "BI ", "Principal", "Architect", "Android", "Machine Learning", "Student",
-                            "Data Engineer", "DevSecOps"]
 
 if __name__ == "__main__":
     logger.info("Starting initialize ")
-    search_term = "software engineer"
-    locations = ["Tel Aviv, Israel", "Ramat Gan, Israel",
-                 "Central, Israel", "Rehovot ,Israel"]
     application.add_handler(start_conv_handler)
     tg_callback_handler = TelegramCallHandler()
     tg_handler_all = TelegramDefaultHandler(sites=[Site.LINKEDIN, Site.GLASSDOOR, Site.INDEED, Site.GOOZALI])
