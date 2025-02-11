@@ -98,11 +98,16 @@ class GoozaliMapper:
                                  dict_column_name_to_column: dict[str, GoozaliColumn]):
         goozali_column_name = job_post_column_to_goozali_column[job_post_column]
         column = dict_column_name_to_column[goozali_column_name]
+        try:
+            if job_post_column == "description":
+                value = handle_description_case(job_post_column, row, dict_column_name_to_column)
+            else:
+                value = row.cellValuesByColumnId[column.id]
+        except Exception as e:
+            if job_post_column == "company_industry":
+                return "Unknown"
+            raise e
 
-        if job_post_column == "description":
-            value = handle_description_case(job_post_column, row, dict_column_name_to_column)
-        else:
-            value = row.cellValuesByColumnId[column.id]
 
         if job_post_column == "location":
             location = Location(text="Not Found")
