@@ -15,6 +15,7 @@ from jobs import (
     JobPost,
     JobResponse,
 )
+from .TheMuseMapper import themuse_mapper
 from ..scraper import Scraper
 from ..scraper_input import ScraperInput
 from ..site import Site
@@ -87,5 +88,8 @@ class TheMuseScraper(Scraper):
             return JobResponse(jobs=job_list,exec_message=exception_message)
 
         result = extract_search_results(response.text)
+        for hit in result:
+            job_post = themuse_mapper.map_themuse_response_to_job_post(hit['hit'])
+            job_list.append(job_post)
 
         return JobResponse(jobs=job_list)

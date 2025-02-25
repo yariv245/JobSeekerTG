@@ -183,8 +183,10 @@ class Country(Enum):
 class Location(BaseModel):
     country: Optional[str] = None
     city: Optional[str] = None
-    state: Optional[str] = None
     text: str = ""
+    state: Optional[str] = None
+    latitude: Optional[str] = None
+    longitude: Optional[str] = None
 
     def dict(self, *args, **kwargs):
         """
