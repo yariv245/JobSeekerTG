@@ -8,3 +8,4 @@ class Site(Enum):
     GLASSDOOR = "glassdoor"
     GOOGLE = "google"
     GOOZALI = "goozali"
+    THEMUSE = "themuse"

@@ -33,6 +33,9 @@ if __name__ == "__main__":
     # Indeed
     tg_handler_indeed = TelegramDefaultHandler(sites=[Site.INDEED])
     application.add_handler(CommandHandler(Site.INDEED.value, tg_handler_indeed.handle))
+    # themuse
+    tg_handler_themuse = TelegramDefaultHandler(sites=[Site.THEMUSE])
+    application.add_handler(CommandHandler(Site.THEMUSE.value, tg_handler_themuse.handle))
     application.add_handler(CommandHandler("myInfo", my_info_handler.handle))
     application.add_handler(CallbackQueryHandler(tg_callback_handler.button_callback))
     application.add_handler(MessageHandler(filters.ALL, any_handler.handle))

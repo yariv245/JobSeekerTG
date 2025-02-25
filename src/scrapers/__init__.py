@@ -21,6 +21,7 @@ from .linkedin import LinkedInScraper
 from .scraper_input import ScraperInput
 from .scraper_response import ScraperResponse
 from .site import Site
+from .themuse import ThemuseScraper
 from .utils import set_logger_level, create_logger
 from .ziprecruiter import ZipRecruiterScraper
 
@@ -67,6 +68,7 @@ def scrape_jobs(
         Site.GLASSDOOR: GlassdoorScraper,
         Site.GOOGLE: GoogleJobsScraper,
         Site.GOOZALI: GoozaliScraper,
+        Site.THEMUSE: ThemuseScraper,
     }
     set_logger_level(verbose)
 
