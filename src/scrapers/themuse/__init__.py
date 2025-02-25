@@ -7,6 +7,10 @@ This module contains routines to scrape themuse.
 
 from __future__ import annotations
 
+import json
+
+from bs4 import BeautifulSoup
+
 from jobs import (
     JobPost,
     JobResponse,
@@ -17,6 +21,24 @@ from ..site import Site
 from ..utils import create_session, create_logger
 
 logger = create_logger("ThemuseScraper")
+
+
+def extract_search_results(html_content):
+    """
+    Extracts the JSON data from the <script id="__NEXT_DATA__"> tag.
+    """
+    soup = BeautifulSoup(html_content, 'html.parser')
+    script_tag = soup.find('script', {'id': '__NEXT_DATA__'})
+
+    if script_tag and script_tag.string:
+        try:
+            data = json.loads(script_tag.string)
+            return data['props']['pageProps']['initialSearchResultsState']['results']
+        except json.JSONDecodeError:
+            print("Error decoding JSON from __NEXT_DATA__ script.")
+            return None
+    else:
+        return None
 
 
 class ThemuseScraper(Scraper):
@@ -53,6 +75,7 @@ class ThemuseScraper(Scraper):
             response = self.session.get(
                 url=self.base_url,
                 timeout=10)
+
             logger.info(f"response: {str(response)}")
             if (response.status_code != 200):
                 response_error_message = f"Status code: {response.status_code}, Error: {str(response.text)}"
@@ -63,5 +86,6 @@ class ThemuseScraper(Scraper):
             logger.error(exception_message)
             return JobResponse(jobs=job_list,exec_message=exception_message)
 
+        result = extract_search_results(response.text)
 
         return JobResponse(jobs=job_list)
