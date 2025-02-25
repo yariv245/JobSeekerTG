@@ -41,7 +41,7 @@ def extract_search_results(html_content):
         return None
 
 
-class ThemuseScraper(Scraper):
+class TheMuseScraper(Scraper):
     delay = 3
     band_delay = 4
     jobs_per_page = 25
@@ -50,7 +50,7 @@ class ThemuseScraper(Scraper):
         self, proxies: list[str] | str | None = None, ca_cert: str | None = None
     ):
         """
-        Initializes ThemuseScraper with the Themusejob search url
+        Initializes TheMuseScraper with the TheMusejob search url
         """
         super().__init__(site=Site.THEMUSE, proxies=proxies, ca_cert=ca_cert)
         self.session = create_session(
@@ -65,7 +65,7 @@ class ThemuseScraper(Scraper):
 
     def scrape(self, scraper_input: ScraperInput) -> JobResponse:
         """
-        Scrapes themuse for jobs with scraper_input criteria
+        Scrapes TheMuse for jobs with scraper_input criteria
         :param scraper_input:
         :return: job_response
         """
