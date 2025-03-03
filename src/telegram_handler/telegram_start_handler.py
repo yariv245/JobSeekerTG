@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Optional
 
 from telegram import Update, Chat, KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.constants import ReactionEmoji
@@ -54,13 +55,13 @@ class TelegramStartHandler:
 
     async def position(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         """Stores the selected position and asks for a locations."""
-        user = update.message.from_user
-        self.logger.info("Position of %s: %s", user.first_name, update.message.text)
-        position = next((p for p in Position if p.value == update.message.text), None)
+        from_user = update.message.from_user
+        self.logger.info("Position of %s: %s", from_user.first_name, update.message.text)
+        position: Optional[Position] = next((p for p in Position if p.value == update.message.text), None)
         if not position:
             await update.message.set_reaction(ReactionEmoji.PILE_OF_POO)
             await update.message.reply_text(POSITION_NOT_FOUND)
-            buttons = [[KeyboardButton(position.value)] for position in Position]
+            buttons = [[KeyboardButton(str(position.value))] for position in Position]
             reply_markup = ReplyKeyboardMarkup(buttons, one_time_keyboard=True,
                                                input_field_placeholder=Flow.POSITION.name)
             await update.message.reply_text(
@@ -70,9 +71,9 @@ class TelegramStartHandler:
             return Flow.POSITION.value
 
         await update.message.set_reaction(ReactionEmoji.FIRE)
-        cached_user: User = cache_manager.find(user.username)
-        cached_user.position = position
-        cache_manager.save(cached_user.username, cached_user)
+        user: User = user_repository.find_by_username(from_user.username)
+        user.position = position
+        cache_manager.save(user.username, user)
         await update.message.reply_text(LOCATION_MESSAGE)
 
         return Flow.ADDRESS.value
