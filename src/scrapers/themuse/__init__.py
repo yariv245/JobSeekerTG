@@ -8,6 +8,7 @@ This module contains routines to scrape themuse.
 from __future__ import annotations
 
 import json
+import re
 
 from bs4 import BeautifulSoup
 
@@ -21,7 +22,7 @@ from ..scraper_input import ScraperInput
 from ..site import Site
 from ..utils import create_session, create_logger
 
-logger = create_logger("ThemuseScraper")
+logger = create_logger("TheMuseScraper")
 
 
 def extract_search_results(html_content):
@@ -48,7 +49,7 @@ class TheMuseScraper(Scraper):
     jobs_per_page = 25
 
     def __init__(
-        self, proxies: list[str] | str | None = None, ca_cert: str | None = None
+            self, proxies: list[str] | str | None = None, ca_cert: str | None = None
     ):
         """
         Initializes TheMuseScraper with the TheMusejob search url
@@ -62,7 +63,6 @@ class TheMuseScraper(Scraper):
             delay=5,
             clear_cookies=False,
         )
-        self.base_url = "https://www.themuse.com/search/location/tel-aviv-israel/keyword/backend/radius/50mi/date-posted/last_7d/"
 
     def scrape(self, scraper_input: ScraperInput) -> JobResponse:
         """
@@ -70,26 +70,42 @@ class TheMuseScraper(Scraper):
         :param scraper_input:
         :return: job_response
         """
-        self.scraper_input = scraper_input
-        job_list: list[JobPost] = []
+        job_set: set[JobPost] = set()
+        responses = []
+        user = scraper_input.user
+        keyword = re.sub(r'\s+', '-', user.position)
+        date_posted = 'last_7d'
         try:
-            response = self.session.get(
-                url=self.base_url,
-                timeout=10)
+            for city in user.cities:
+                city_lower = city.lower()
+                country_lower = user.country.lower()
+                city_hyphenated = city_lower.replace(" ", "-")
+                location = f"{city_hyphenated}-{country_lower}"
+                url = f"https://www.themuse.com/search/location/{location}/keyword/{keyword}/radius/50mi/date-posted/{date_posted}/"
+                response = self.session.get(
+                    url=url,
+                    timeout=10)
 
-            logger.info(f"response: {str(response)}")
-            if (response.status_code != 200):
-                response_error_message = f"Status code: {response.status_code}, Error: {str(response.text)}"
-                logger.error(response_error_message)
-                return JobResponse(jobs=job_list,exec_message=response_error_message)
+                logger.info(f"response: {str(response)}")
+                if response.status_code != 200:
+                    response_error_message = f"Status code: {response.status_code}, Error: {str(response.text)}"
+                    logger.error(response_error_message)
+                    return JobResponse(jobs=list(job_set), exec_message=response_error_message)
+                responses.append(response)
         except Exception as e:
             exception_message = f"Exception: {str(e)}"
             logger.error(exception_message)
-            return JobResponse(jobs=job_list,exec_message=exception_message)
+            return JobResponse(jobs=list(job_set), exec_message=exception_message)
 
-        result = extract_search_results(response.text)
-        for hit in result:
-            job_post = themuse_mapper.map_themuse_response_to_job_post(hit['hit'])
-            job_list.append(job_post)
+        for res in responses:
+            result = extract_search_results(res.text)
+            for hit in result:
+                try:
+                    job_post = themuse_mapper.map_themuse_response_to_job_post(hit['hit'])
+                    if job_post:
+                        job_set.add(job_post)
+                except Exception as e:
+                    exception_message = f"Exception: {str(e)}"
+                    logger.error(exception_message)
 
-        return JobResponse(jobs=job_list)
+        return JobResponse(jobs=list(job_set))

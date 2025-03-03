@@ -32,8 +32,10 @@ class TheMuseMapper:
             longitude=str(location['longitude']),
             text=location['address'])
 
-    def map_themuse_response_to_job_post(self, hit) -> JobPost:
+    def map_themuse_response_to_job_post(self, hit) -> JobPost | None:
         location = self.map_to_location(hit['locations'])
+        if not location:
+            return None
         url = f"https://www.themuse.com/jobs/{hit['company']['short_name']}/{hit['short_title']}"
         timestamp = datetime.fromtimestamp(hit['posted_at'])
         job_post = JobPost(

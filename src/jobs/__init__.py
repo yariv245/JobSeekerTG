@@ -324,6 +324,14 @@ class JobPost(BaseModel):
             data['location'] = Location.model_load(data['location'])
         return JobPost(**data)
 
+    def __eq__(self, other):
+        if isinstance(other, JobPost):
+            return self.id == other.id  # compare all relevant attributes
+        return NotImplemented
+
+    def __hash__(self):
+        return hash(self.id)  # hash all relevant attributes.
+
 
 class JobResponse(BaseModel):
     jobs: list[JobPost] = []
