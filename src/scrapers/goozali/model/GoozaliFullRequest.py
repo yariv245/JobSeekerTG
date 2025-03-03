@@ -5,15 +5,15 @@ class GoozaliFullRequest():
     def __init__(self, base_url: str):
         self.view_id: str = "viwIOzPYaUGxlA0Jd"
         self.url = base_url.format(view_id=self.view_id)
-        self.air_table_page_load_id: str = "pglVXJp6or1jcFpiB"
+        self.air_table_page_load_id: str = "pglgF7ugDxIev7ACF"
         self.stringifiedObjectParams = {
             "shouldUseNestedResponseFormat": "true"}
         self.cookies: dict[str, str] = {}
-        self.request_id: str = "reqAjidFo7yWoTnpa"
+        self.request_id: str = "req1Z7o8OmHAZBJfz"
         self.share_id: str = "shrQBuWjXd0YgPqV6"
         self.application_id: str = "appwewqLk7iUY4azc"
-        self.expire: str = "2025-02-27T00:00:00.000Z"
-        self.signature: str = "abcef88cdfe5c25f57f770a97dda0c0401530aff42c2f563a8d24b97dec17e75"
+        self.expire: str = "2025-03-27T00:00:00.000Z"
+        self.signature: str = "cc3e3fa0ae2d569d010a067261f59505789e697a24e083f3f21285a79236bd99"
         self.headers = self._generate_headers()
         self.params = self._generate_params()
         self.cookies = {}
