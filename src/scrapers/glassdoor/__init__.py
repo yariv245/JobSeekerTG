@@ -211,8 +211,7 @@ class GlassdoorScraper(Scraper):
         location_type = job["header"].get("locationType", "")
         age_in_days = job["header"].get("ageInDays")
         is_remote, location = False, None
-        date_diff = (datetime.now() - timedelta(days=age_in_days))
-        date_posted = date_diff if age_in_days is not None else None
+        date_posted = (datetime.now() - timedelta(days=age_in_days))
 
         if location_type == "S":
             is_remote = True

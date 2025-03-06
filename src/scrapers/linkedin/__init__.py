@@ -234,7 +234,7 @@ class LinkedInScraper(Scraper):
             try:
                 date_posted = datetime.strptime(datetime_str, "%Y-%m-%d")
             except:
-                date_posted = None
+                date_posted = datetime.now()
         job_details = {}
         if full_descr:
             job_details = self._get_job_details(job_id)

@@ -241,7 +241,7 @@ class IndeedScraper(Scraper):
             job_type=job_type,
             compensation=self._get_compensation(job["compensation"]),
             date_posted=date_posted,
-            datetime_posted=date_posted,
+            datetime_posted=datetime.fromtimestamp(timestamp_seconds),
             job_url=job_url,
             job_url_direct=(
                 job["recruit"].get("viewJobUrl") if job.get(
