@@ -40,6 +40,6 @@ class TelegramCallHandler:
         query = update.callback_query
         await query.answer()
         job_id = _extract_job_id(query.message.text)
-        button_context = ButtonCallBackContext(query.data, query.message, job_id)
+        button_context = ButtonCallBackContext(query, job_id)
 
         await button_context.run()
