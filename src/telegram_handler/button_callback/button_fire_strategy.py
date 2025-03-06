@@ -27,7 +27,7 @@ class FireStrategy(ButtonStrategy):
         if not application:
             application = Application(user_id=self._from_user.username, job_id=self._job_id, message_id=message_id)
             application_repository.insert_application(application)
-        else:
+        elif not application.active:
             application.active = True
             application_repository.update(application)
 

@@ -26,7 +26,7 @@ class PooStrategy(ButtonStrategy):
             self._logger.error(
                 f"Application of {self._from_user.username} with message id: {self._message.message_id} not found.")
             return
-        else:
+        elif application.active:
             application.active = False
             application_repository.update(application)
 
