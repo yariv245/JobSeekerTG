@@ -23,7 +23,7 @@ class User(BaseModel):
         if self.chat_id:
             message += f"Chat ID: {self.chat_id}\n"
         if self.job_age:
-            message += f"Job Age (Hours): {self.experience}\n"
+            message += f"Job Age (Hours): {self.job_age}\n"
         if self.experience:
             message += f"Experience(Years): {self.experience}\n"
         if self.position:
