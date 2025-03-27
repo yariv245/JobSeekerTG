@@ -20,4 +20,4 @@ COPY . .
 ENV PYTHONUNBUFFERED=1
 
 # Run the bot
-CMD ["python", "main.py"]
+CMD ["python", "src/main.py"]
