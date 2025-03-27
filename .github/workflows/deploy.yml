@@ -9,6 +9,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Debug SSH Connection
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          script: |
+            echo "✅ Successfully connected to the VM!"
+            hostname
+            whoami
+            ls -la ~
       - name: Connect to VM and deploy
         uses: appleboy/ssh-action@v0.1.7
         with:
