@@ -1,6 +1,7 @@
 from model.Position import Position
 from .model import GoozaliColumn, GoozaliFieldChoice
 
+
 job_post_column_to_goozali_column = {
     "date_posted": "Discovered",
     "field": "Field",
