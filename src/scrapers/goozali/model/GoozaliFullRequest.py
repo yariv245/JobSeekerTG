@@ -3,17 +3,17 @@ import json
 
 class GoozaliFullRequest():
     def __init__(self, base_url: str):
-        self.view_id: str = "viwIOzPYaUGxlA0Jd"
+        self.view_id: str = "viwagEIbkfz2iMsLU"
         self.url = base_url.format(view_id=self.view_id)
-        self.air_table_page_load_id: str = "pglgF7ugDxIev7ACF"
+        self.air_table_page_load_id: str = "pglmgyLr7QmIM3xIC"
         self.stringifiedObjectParams = {
             "shouldUseNestedResponseFormat": "true"}
         self.cookies: dict[str, str] = {}
-        self.request_id: str = "req1Z7o8OmHAZBJfz"
-        self.share_id: str = "shrQBuWjXd0YgPqV6"
-        self.application_id: str = "appwewqLk7iUY4azc"
-        self.expire: str = "2025-03-27T00:00:00.000Z"
-        self.signature: str = "cc3e3fa0ae2d569d010a067261f59505789e697a24e083f3f21285a79236bd99"
+        self.request_id: str = "req9oOuqcMTkEfyPs"
+        self.share_id: str = "shr97tl6luEk4Ca9R"
+        self.application_id: str = "app5sYJyDgcRbJWYU"
+        self.expire: str = "2025-04-24T00:00:00.000Z"
+        self.signature: str = "bc97dd6157584cc6d51be1248c6306bf53c322b6b16f273ca374a60d75ccd766"
         self.headers = self._generate_headers()
         self.params = self._generate_params()
         self.cookies = {}
