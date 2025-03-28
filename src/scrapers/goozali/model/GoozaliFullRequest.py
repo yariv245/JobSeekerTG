@@ -3,17 +3,17 @@ import json
 
 class GoozaliFullRequest():
     def __init__(self, base_url: str):
-        self.view_id: str = "viwagEIbkfz2iMsLU"
+        self.view_id: str = "viwIOzPYaUGxlA0Jd"
         self.url = base_url.format(view_id=self.view_id)
         self.air_table_page_load_id: str = "pglmgyLr7QmIM3xIC"
         self.stringifiedObjectParams = {
             "shouldUseNestedResponseFormat": "true"}
         self.cookies: dict[str, str] = {}
-        self.request_id: str = "req9oOuqcMTkEfyPs"
-        self.share_id: str = "shr97tl6luEk4Ca9R"
-        self.application_id: str = "app5sYJyDgcRbJWYU"
+        self.request_id: str = "reqcUhKieU5vPI9uk"
+        self.share_id: str = "shrQBuWjXd0YgPqV6"
+        self.application_id: str = "appwewqLk7iUY4azc"
         self.expire: str = "2025-04-24T00:00:00.000Z"
-        self.signature: str = "bc97dd6157584cc6d51be1248c6306bf53c322b6b16f273ca374a60d75ccd766"
+        self.signature: str = "afb7728e3a86c0d925e7df08506fdf92fbe92db66751b495bcbb41c333554ada"
         self.headers = self._generate_headers()
         self.params = self._generate_params()
         self.cookies = {}
