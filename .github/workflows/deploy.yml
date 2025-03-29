@@ -1,4 +1,4 @@
-name: Deploy to Proxmox VM
+name: Deploy JobSeekerBot to Proxmox VM
 
 on:
   push:
@@ -12,25 +12,26 @@ jobs:
       - name: Debug SSH Connection
         uses: appleboy/ssh-action@v0.1.7
         with:
-          host: ${{ secrets.VM_HOST }}
+          host: ${{ secrets.VM_JOB_SEEKER_BOT_HOST }} # Correct host for JobSeekerBot
           username: ${{ secrets.VM_USER }}
           key: ${{ secrets.VM_SSH_KEY }}
-          port: ${{ secrets.VM_PORT}}
+          port: ${{ secrets.VM_JOB_SEEKER_BOT_PORT }} # Ensure this secret is set in GitHub
           script: |
-            echo "✅ Successfully connected to the VM!"
+            echo "✅ Successfully connected to the JobSeekerBot VM!"
             hostname
             whoami
             ls -la ~
+
       - name: Connect to VM and deploy
         uses: appleboy/ssh-action@v0.1.7
         with:
-          host: ${{ secrets.VM_HOST }}
+          host: ${{ secrets.VM_JOB_SEEKER_BOT_HOST }}
           username: ${{ secrets.VM_USER }}
           key: ${{ secrets.VM_SSH_KEY }}
-          port: ${{ secrets.VM_PORT}}
+          port: ${{ secrets.VM_JOB_SEEKER_BOT_PORT }}
           script: |
             cd ~/JobSeekerTG
             git pull origin main
-            docker compose build
-            docker compose down
-            docker compose up -d
+            docker-compose build
+            docker-compose down
+            docker-compose up -d
