@@ -5,10 +5,10 @@ from jobs import JobPost, Location
 from .constants import job_post_column_to_goozali_column, job_post_column_names
 from .model import GoozaliColumnTypeOptions, GoozaliResponse, GoozaliRow, GoozaliColumn, GoozaliColumnChoice, \
     GoozaliResponseData
-
+from ..utils import create_logger
 
 # Mapping function to convert parsed dictionary into GoozaliResponseData
-
+logger = create_logger("GoozaliMapper")
 
 def handle_description_case(job_post_column: str, row: GoozaliRow,
                             dict_column_name_to_column: dict[str, GoozaliColumn]):
@@ -104,9 +104,15 @@ class GoozaliMapper:
             else:
                 value = row.cellValuesByColumnId[column.id]
         except Exception as e:
+            logger.error(str(e))
+            logger.error(f"Can't find cellValuesByColumnId: {column.name} - {column.id}")
+
             if job_post_column == "company_industry":
                 return "Unknown"
-            raise e
+            if job_post_column == "location":
+                return Location(text="Not Found")
+
+            raise f"Can't find cellValuesByColumnId: {column.name} - {column.id}"
 
 
         if job_post_column == "location":
