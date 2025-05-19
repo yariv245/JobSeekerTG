@@ -56,7 +56,7 @@ class GoozaliScraper(Scraper):
         self.scraper_input = scraper_input
         job_list: list[JobPost] = []
         full_request = GoozaliFullRequest(self.base_url)
-        part_request = GoozaliPartRequest(self.base_url)
+        # part_request = GoozaliPartRequest(self.base_url)
         try:
             response = self.session.get(
                 url=full_request.url,
