@@ -12,7 +12,7 @@ class GoozaliFullRequest():
         self.request_id: str = "reqWDySPYOEtB3YeT"
         self.share_id: str = "shrQBuWjXd0YgPqV6"
         self.application_id: str = "appwewqLk7iUY4azc"
-        self.expire: str = "2025-07-0T00:00:00.000Z"
+        self.expire: str = "2025-07-03T00:00:00.000Z"
         self.signature: str = "8294dc87018522e965bf4ed7a721bf8d89a20ede0498a1e4f839deba336b86f3"
         self.headers = self._generate_headers()
         self.params = self._generate_params()
