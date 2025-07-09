@@ -5,15 +5,11 @@ class GoozaliFullRequest():
     def __init__(self, base_url: str):
         self.view_id: str = "viwIOzPYaUGxlA0Jd"
         self.url = base_url.format(view_id=self.view_id)
-        self.air_table_page_load_id: str = "pglGXjRxzpq7yjQUx"
-        self.stringifiedObjectParams = {
-            "shouldUseNestedResponseFormat": "true"}
+        self.air_table_page_load_id: str = "pgl8w9irz5YClGmST"
         self.cookies: dict[str, str] = {}
-        self.request_id: str = "reqWDySPYOEtB3YeT"
-        self.share_id: str = "shrQBuWjXd0YgPqV6"
-        self.application_id: str = "appwewqLk7iUY4azc"
-        self.expire: str = "2025-07-03T00:00:00.000Z"
-        self.signature: str = "8294dc87018522e965bf4ed7a721bf8d89a20ede0498a1e4f839deba336b86f3"
+        self.request_id: str = "reqGu8KVhmdHvq9Ut"
+        self.expire: str = "2025-07-31T00:00:00.000Z"
+        self.signature: str = "474f346b264a0503aaa4be298f49aa66494b31e5af72b35d5e46c40cd6ff3c5c"
         self.headers = self._generate_headers()
         self.params = self._generate_params()
         self.cookies = {}
@@ -22,7 +18,8 @@ class GoozaliFullRequest():
         access_policy = self._generate_access_policy()
 
         return {
-            "stringifiedObjectParams": self.stringifiedObjectParams,
+            "stringifiedObjectParams": {
+            "shouldUseNestedResponseFormat": "true"},
             "request_id": self.request_id,
             "accessPolicy": access_policy
         }
@@ -40,7 +37,7 @@ class GoozaliFullRequest():
             'sec-fetch-site': 'same-origin',
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
             'x-airtable-accept-msgpack': 'true',
-            'x-airtable-application-id': self.application_id,
+            'x-airtable-application-id': "appwewqLk7iUY4azc",
             'x-airtable-inter-service-client': 'webClient',
             'x-airtable-page-load-id': self.air_table_page_load_id,
             'x-early-prefetch': 'true',
@@ -64,8 +61,8 @@ class GoozaliFullRequest():
                 {"modelClassName": "row", "modelIdSelector": f"rows *[displayedInView={self.view_id}]",
                  "action": "createDocumentPreviewSession"}
             ],
-            "shareId": self.share_id,
-            "applicationId": self.application_id,
+            "shareId": "shrQBuWjXd0YgPqV6",
+            "applicationId": "appwewqLk7iUY4azc",
             "generationNumber": 0,
             "expires": self.expire,
             "signature": self.signature
