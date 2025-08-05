@@ -5,11 +5,11 @@ class GoozaliFullRequest():
     def __init__(self, base_url: str):
         self.view_id: str = "viwIOzPYaUGxlA0Jd"
         self.url = base_url.format(view_id=self.view_id)
-        self.air_table_page_load_id: str = "pgl8w9irz5YClGmST"
+        self.air_table_page_load_id: str = "pglrtEHCRTQwnTvBj"
         self.cookies: dict[str, str] = {}
-        self.request_id: str = "reqGu8KVhmdHvq9Ut"
-        self.expire: str = "2025-07-31T00:00:00.000Z"
-        self.signature: str = "474f346b264a0503aaa4be298f49aa66494b31e5af72b35d5e46c40cd6ff3c5c"
+        self.request_id: str = "reqTvLYVzH7QJnUNc"
+        self.expire: str = "2025-08-28T00:00:00.000Z"
+        self.signature: str = "c5de4184aab7ccfa0ba77ef676c7bccd66be6351c513aa62feb84d286a20c9a3"
         self.headers = self._generate_headers()
         self.params = self._generate_params()
         self.cookies = {}
